@@ -59,6 +59,11 @@ public class RandomUtilsTest
                 lowerBound,
                 upperBound
             );
+            foreach (int number in numbers)
+            {
+                Assert.IsTrue(lowerBound <= number);
+                Assert.IsTrue(upperBound >= number);
+            }
             LogNumbers(numbers);
             Assert.AreEqual(sum, numbers.Sum());
         }

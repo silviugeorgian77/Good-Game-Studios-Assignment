@@ -21,7 +21,6 @@ public class MainSceneManager : MonoBehaviour
             = EnumUtils.GetValues<ArmyUnitType>().ToList();
         armyUnitTypesCount = armyUnitTypes.Count();
 
-        inputField.text = armyUnitTypesCount.ToString();
         SpawnArmy();
     }
 
@@ -78,6 +77,12 @@ public class MainSceneManager : MonoBehaviour
         catch
         {
             return;
+        }
+
+        if (sum < armyUnitTypesCount)
+        {
+            sum = armyUnitTypesCount;
+            inputField.text = sum.ToString();
         }
 
 
