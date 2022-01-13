@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Text;
 using System.Linq;
+using System;
 using UnityEngine;
 
 public class RandomUtilsTest
@@ -18,9 +19,21 @@ public class RandomUtilsTest
     }
 
     [Test]
-    public void GenerateRandomNumbersThatAddUpToSum_TestSumMinus100Count3LB1UB100()
+    public void GenerateRandomNumbersThatAddUpToSum_TestNegativeSumThrowsException()
     {
-        GenerateRandomNumbersThatAddUpToSum_GenericTest(-100, 3, 1, 100);
+        Assert.Throws<ArgumentException>(() =>
+        {
+            GenerateRandomNumbersThatAddUpToSum_GenericTest(-100, 3, 1, 100);
+        });
+    }
+
+    [Test]
+    public void GenerateRandomNumbersThatAddUpToSum_TestNegativeCountThrowsException()
+    {
+        Assert.Throws<ArgumentException>(() =>
+        {
+            GenerateRandomNumbersThatAddUpToSum_GenericTest(100, -3, 1, 100);
+        });
     }
 
     private void GenerateRandomNumbersThatAddUpToSum_GenericTest(
