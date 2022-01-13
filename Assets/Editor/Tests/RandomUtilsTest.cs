@@ -7,6 +7,13 @@ using UnityEngine;
 public class RandomUtilsTest
 {
     [Test]
+    public void GenerateRandomNumbersThatAddUpToSum_TestSum200Count15LB1UB200()
+    {
+        GenerateRandomNumbersThatAddUpToSum_GenericTest(200, 15, 1, 200);
+    }
+
+
+    [Test]
     public void GenerateRandomNumbersThatAddUpToSum_TestSum100Count3LB1UB100()
     {
         GenerateRandomNumbersThatAddUpToSum_GenericTest(100, 3, 1, 100);

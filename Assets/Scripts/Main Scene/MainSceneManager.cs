@@ -11,7 +11,19 @@ public class MainSceneManager : MonoBehaviour
     [SerializeField]
     private ItemMatrixSpawner itemMatrixSpawner;
 
+    private List<ArmyUnitType> armyUnitTypes;
     private List<ArmyUnit> armyUnits = new List<ArmyUnit>();
+    private int armyUnitTypesCount;
+
+    private void Awake()
+    {
+        armyUnitTypes
+            = EnumUtils.GetValues<ArmyUnitType>().ToList();
+        armyUnitTypesCount = armyUnitTypes.Count();
+
+        inputField.text = armyUnitTypesCount.ToString();
+        SpawnArmy();
+    }
 
     private void InitMatrix()
     {
@@ -53,15 +65,25 @@ public class MainSceneManager : MonoBehaviour
 
     public void OnSpawnClicked()
     {
-        int sum = int.Parse(inputField.text);
+        SpawnArmy();
+    }
 
-        List<ArmyUnitType> armyUnitTypes
-            = EnumUtils.GetValues<ArmyUnitType>().ToList();
-        int count = armyUnitTypes.Count();
+    private void SpawnArmy()
+    {
+        int sum;
+        try
+        {
+            sum = int.Parse(inputField.text);
+        }
+        catch
+        {
+            return;
+        }
+
 
         int[] armyCounts = RandomUtils.GenerateRandomNumbersThatAddUpToSum(
             sum,
-            count,
+            armyUnitTypesCount,
             1,
             sum
         );

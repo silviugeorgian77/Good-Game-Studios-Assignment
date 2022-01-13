@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class RandomUtils : MonoBehaviour
 {
@@ -41,9 +42,10 @@ public class RandomUtils : MonoBehaviour
             currentSum += currentNumber;
         }
 
-        float arrayScale = sum / currentSum;
+        float arrayScale = (float)sum / currentSum;
 
         currentSum = 0;
+        List<int> belowUpperBoundIndexes = new List<int>();
         for (int i = 0; i < count; i++)
         {
             currentNumber = (int)(result[i] * arrayScale);
@@ -54,20 +56,38 @@ public class RandomUtils : MonoBehaviour
             );
             result[i] = currentNumber;
             currentSum += currentNumber;
-        }
-
-        int extraSum = sum - currentSum;
-        int randomIndex;
-        while (extraSum > 0)
-        {
-            randomIndex = UnityEngine.Random.Range(0, result.Length);
-            if (result[randomIndex] < upperBound)
+            if (currentNumber < upperBound)
             {
-                result[randomIndex]++;
-                extraSum--;
+                belowUpperBoundIndexes.Add(i);
             }
         }
 
+        int extraSum = sum - currentSum;
+        if (extraSum > 0)
+        {
+            if (belowUpperBoundIndexes.Count > 0)
+            {
+                int randomInt;
+                while (extraSum > 0)
+                {
+                    randomInt = UnityEngine.Random.Range(
+                        0,
+                        belowUpperBoundIndexes.Count
+                    );
+
+                    result[belowUpperBoundIndexes[randomInt]]++;
+                    extraSum--;
+                }
+            }
+            else
+            {
+                throw new ArgumentException(
+                    "Cannot generate numbers that add up to given sum " +
+                    "with the given parameters"
+                );
+            }
+        }
+        
         return result;
     }
 }
