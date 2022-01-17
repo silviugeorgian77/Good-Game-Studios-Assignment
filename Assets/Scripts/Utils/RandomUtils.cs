@@ -65,21 +65,24 @@ public class RandomUtils : MonoBehaviour
         int extraSum = sum - currentSum;
         if (extraSum > 0)
         {
-            if (belowUpperBoundIndexes.Count > 0)
+            int randomInt;
+            while (extraSum > 0 && belowUpperBoundIndexes.Count > 0)
             {
-                int randomInt;
-                while (extraSum > 0)
-                {
-                    randomInt = UnityEngine.Random.Range(
-                        0,
-                        belowUpperBoundIndexes.Count
-                    );
+                randomInt = UnityEngine.Random.Range(
+                    0,
+                    belowUpperBoundIndexes.Count
+                );
 
-                    result[belowUpperBoundIndexes[randomInt]]++;
-                    extraSum--;
+                result[belowUpperBoundIndexes[randomInt]]++;
+                if (result[belowUpperBoundIndexes[randomInt]]
+                    == upperBound)
+                {
+                    belowUpperBoundIndexes.Remove(randomInt);
                 }
+                extraSum--;
             }
-            else
+
+            if (extraSum > 0)
             {
                 throw new ArgumentException(
                     "Cannot generate numbers that add up to given sum " +
